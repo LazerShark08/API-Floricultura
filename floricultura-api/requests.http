@@ -1,0 +1,98 @@
+###############################################
+# LISTAR FLORES
+###############################################
+GET http://localhost:3000/flowers
+Accept: application/json
+
+
+###############################################
+# CRIAR NOVA FLOR
+###############################################
+POST http://localhost:3000/flowers
+Content-Type: application/json
+
+{
+  "name": "Rosa Vermelha",
+  "description": "Rosa clássica, perfeita para presentes.",
+  "price": 19.90,
+  "stock": 30,
+  "image_url": "https://example.com/rosa.png"
+}
+
+
+###############################################
+# OBTER FLOR POR ID
+###############################################
+GET http://localhost:3000/flowers/2
+Accept: application/json
+
+
+###############################################
+# ATUALIZAR FLOR
+###############################################
+PUT http://localhost:3000/flowers/2
+Content-Type: application/json
+
+{
+  "stock": 50
+}
+
+
+###############################################
+# DELETAR FLOR
+###############################################
+DELETE http://localhost:3000/flowers/2
+Accept: application/json
+
+
+################################################
+# CRIAR USUÁRIO
+################################################
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Cliente Teste",
+  "email": "cliente@example.com"
+}
+
+
+################################################
+# BUSCAR USUÁRIO POR ID
+# (Substitua o UUID real do usuário criado)
+################################################
+GET http://localhost:3000/users/1
+Accept: application/json
+
+
+################################################
+# VER CARRINHO DO USUÁRIO
+################################################
+GET http://localhost:3000/cart/1
+Accept: application/json
+
+
+################################################
+# ADICIONAR ITEM AO CARRINHO
+################################################
+POST http://localhost:3000/cart/1/items
+Content-Type: application/json
+
+{
+  "flower_id": 2,
+  "quantity": 3
+}
+
+
+################################################
+# REMOVER ITEM DO CARRINHO
+################################################
+DELETE http://localhost:3000/cart/1/items/1
+Accept: application/json
+
+
+################################################
+# FINALIZAR COMPRA (CHECKOUT)
+################################################
+POST http://localhost:3000/cart/1/checkout
+Accept: application/json
