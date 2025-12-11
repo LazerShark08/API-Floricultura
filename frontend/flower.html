@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes da Flor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="aero-bg"></div>
+<div class="lens-flare"></div>
+<div class="aero-ambient"></div>
+
+<div class="bubbles">
+  <div class="bubble" style="--size:60px; --time:18s; --drift:20px; left:10%;"></div>
+  <div class="bubble" style="--size:40px; --time:22s; --drift:-15px; left:25%;"></div>
+  <div class="bubble" style="--size:80px; --time:17s; --drift:30px; left:40%;"></div>
+  <div class="bubble" style="--size:55px; --time:26s; --drift:-25px; left:60%;"></div>
+  <div class="bubble" style="--size:70px; --time:19s; --drift:35px; left:75%;"></div>
+</div>
+
+<header class="site-header">
+    <div class="brand">
+        <div class="logo-gloss"><span>Flori</span><strong>Bloom</strong></div>
+        <div class="tag">Flores frescas • Entrega rápida ✿</div>
+    </div>
+
+    <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="cart.html">Carrinho</a>
+        <a href="login.html">Login</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="flower-box">
+        <div class="flower-image-wrapper">
+            <img id="flower-img" src="" alt="">
+        </div>
+
+        <div class="flower-info">
+            <h2 id="flower-name"></h2>
+            <p id="flower-desc"></p>
+            <p class="price" id="flower-price"></p>
+            <button class="btn" id="add-to-cart">Adicionar ao carrinho</button>
+        </div>
+    </div>
+</div>
+
+<script>
+async function carregarDetalhes(){
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id"); // ← ESTE é o ID da flor
+
+    const resp = await fetch(`/flowers/${id}`);
+    const f = await resp.json();
+
+    document.getElementById("flower-img").src = f.image_url;
+    document.getElementById("flower-name").textContent = f.name;
+    document.getElementById("flower-desc").textContent = f.description;
+    document.getElementById("flower-price").textContent = "R$ " + f.price.toFixed(2);
+
+    document.getElementById("add-to-cart").onclick = async () => {
+        const token = localStorage.getItem("token");
+
+        if (!token){
+            alert("Você precisa fazer login!");
+            return window.location.href = "login.html";
+        }
+
+        const resp = await fetch("/cart", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({
+                flower_id: id  // ← CORRETO AGORA
+            })
+        });
+
+        if (resp.ok) {
+            alert("Adicionado ao carrinho!");
+        } else {
+            alert("Erro ao adicionar ao carrinho!");
+        }
+    };
+}
+
+carregarDetalhes();
+</script>
+
+</body>
+</html>
